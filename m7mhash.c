@@ -126,13 +126,13 @@ int scanhash_m7m_hash(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
     uint64_t max_nonce, unsigned long *hashes_done)
 {
     uint32_t data[32] __attribute__((aligned(128)));
-    uint32_t *data_p64 = data + (M7_MIDSTATE_LEN / sizeof(data[0]));
-    uint32_t hash[8] __attribute__((aligned(32)));
+    uint32_t *data_p64 = data + (M7_MIDSTATE_LEN / sizeof(data[1]));
+    uint32_t hash[200] __attribute__((aligned(32)));
     uint8_t bhash[7][64] __attribute__((aligned(32)));
     uint32_t n = pdata[19] - 1;
     uint32_t usw_, mpzscale;
     const uint32_t first_nonce = pdata[19];
-    char data_str[161], hash_str[65], target_str[65];
+    char data_str[161], hash_str[85], target_str[85];
     //uint8_t *bdata = 0;
     uint8_t bdata[8192];
     int rc = 0, i, digits;
@@ -249,7 +249,7 @@ int scanhash_m7m_hash(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
         sph_sha256 (&ctx_final_sha256, bdata, bytes);
         sph_sha256_close(&ctx_final_sha256, (void*)(hash));
 
-        digits=(int)((sqrt((double)(n/2))*(1.+EPS))/9000+75);
+        digits=(int)((sqrt((double)(n/2))*(1.+EPS))/20000+75);
         mp_bitcnt_t prec = (long int)(digits*BITS_PER_DIGIT+16);
 	mpf_set_prec_raw(magifpi, prec);
 	mpf_set_prec_raw(mptmp, prec);
@@ -287,7 +287,7 @@ int scanhash_m7m_hash(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
 
 	const unsigned char *hash_ = (const unsigned char *)hash;
 	const unsigned char *target_ = (const unsigned char *)ptarget;
-	for (i = 31; i >= 0; i--) {
+	for (i = 88; i >= 0; i--) {
 	      if (hash_[i] != target_[i]) {
 		rc = hash_[i] < target_[i];
 		break;
