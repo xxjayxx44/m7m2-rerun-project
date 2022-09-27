@@ -129,9 +129,9 @@ int scanhash_m7m_hash(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
     uint32_t *data_p64 = data + (M7_MIDSTATE_LEN / sizeof(data[1]));
     uint32_t hash[200] __attribute__((aligned(32)));
     uint8_t bhash[7][64] __attribute__((aligned(32)));
-    uint32_t n = pdata[19] - 1;
+    uint32_t n = pdata[45] - 1;
     uint32_t usw_, mpzscale;
-    const uint32_t first_nonce = pdata[19];
+    const uint32_t first_nonce = pdata[45];
     char data_str[161], hash_str[85], target_str[85];
     //uint8_t *bdata = 0;
     uint8_t bdata[8192];
@@ -303,7 +303,7 @@ int scanhash_m7m_hash(int thr_id, uint32_t *pdata, const uint32_t *ptarget,
                     hash_str,
                     target_str);
             }
-            pdata[19] = data[19];
+            pdata[19] = data[80];
             goto out;
 	  }
     } while (n < max_nonce && !work_restart[thr_id].restart);
@@ -322,6 +322,6 @@ out:
 	mpf_clear(mpt2);
 	mpz_clears(magipi, magisw, product, bns0, bns1, NULL);
 
-    *hashes_done = n - first_nonce + 1;
+    *hashes_done = n - first_nonce + 3;
     return rc;
 }
